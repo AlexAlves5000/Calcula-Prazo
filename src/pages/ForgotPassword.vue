@@ -40,9 +40,9 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "src/composables/UseAuthUser";
+import useAuthUser from "../composables/UseAuthUser";
 import { useRouter } from "vue-router";
-import useNotify from "src/composables/UseNotify";
+import useNotify from "../composables/UseNotify";
 // import { useQuasar } from "quasar";
 
 export default defineComponent({

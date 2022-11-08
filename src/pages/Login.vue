@@ -54,7 +54,8 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import useAuthUser from "src/composables/UseAuthUser";
+import useAuthUser from "../composables/UseAuthUser";
+// import useAuthUser from "composables/UseAuthUser";
 import useNotify from "../composables/UseNotify";
 import { useRouter } from "vue-router";
 // import { useQuasar } from "quasar";

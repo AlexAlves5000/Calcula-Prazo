@@ -34,9 +34,9 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "src/composables/UseAuthUser";
-import useSupabase from "src/boot/supabase";
-import useNotify from "src/composables/UseNotify";
+import useAuthUser from "../composables/UseAuthUser";
+import useSupabase from "../boot/supabase";
+import useNotify from "../composables/UseNotify";
 import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
