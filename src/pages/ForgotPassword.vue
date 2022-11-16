@@ -57,20 +57,9 @@ export default defineComponent({
       try {
         console.log(email.value);
         await sendPasswordRestEmail(email.value);
-        // $q.dialog({
-        //   persistent: true,
-        //   position: "bottom",
-        //   title: "Recuperar Senha",
-        //   message: `Email enviado para: ${email.value}`,
-        // });
         router.push({ name: "login" });
         notifySuccess(`Senha recuperada enviada para email: ${email.value}`);
       } catch (error) {
-        // $q.dialog({
-        //   title: "Erro",
-        //   message: `Ocorreu o seguinte erro: ${error.message}`,
-        //   persistent: true,
-        // });
         notifyError(`Ocorreu o seguinte erro: ${error.message}`);
       }
     };

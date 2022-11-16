@@ -63,7 +63,6 @@ import { defineComponent, ref } from "vue";
 import useAuthUser from "../composables/UseAuthUser";
 import useNotify from "../composables/UseNotify";
 import { useRouter } from "vue-router";
-// import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "PageRegister",
@@ -71,13 +70,13 @@ export default defineComponent({
     const router = useRouter();
     const { register } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
-    // const $q = useQuasar();
 
     const form = ref({
       name: "",
       email: "",
       password: "",
     });
+
     const handleRegister = async () => {
       try {
         await register(form.value);
@@ -86,16 +85,8 @@ export default defineComponent({
           query: { email: form.value.email },
         });
         notifySuccess(`Email de confirmação enviado para: ${form.value.email}`);
-        // $q.dialog({
-        //   title: "Email Enviado",
-        //   message: `Email de confirmação enviado para: ${form.value.email}`,
-        // });
       } catch (error) {
         notifyError(`Ocorreu o seguinte erro: ${error.message}`);
-        // $q.dialog({
-        //   title: "Erro",
-        //   message: `Erro apresentado: ${error.message}`,
-        // });
       }
     };
     return {

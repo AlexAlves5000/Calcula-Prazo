@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { onActivated } from 'vue';
 
 export const useCounterStore = defineStore('counter', {
   state: () => ({

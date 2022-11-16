@@ -84,24 +84,14 @@ export default defineComponent({
     const handleLogin = async () => {
       try {
         await login(form.value);
-        notifySuccess("Logado com sucesso!");
+        notifySuccess("Login realizado com sucesso!");
         router.push({ name: "me" });
       } catch (error) {
         console.log(error);
         if (error.message == "Invalid login credentials") {
           notifyError("Informações do usuário não encontrados ou incorretas!");
-          // $q.dialog({
-          //   type: "negative",
-          //   title: "Erro",
-          //   message: `Informações do usuário não encontrados ou incorretas!`,
-          // });
         } else {
           notifyError(`Ocorreu o seguinte erro: ${error.message}`);
-          // $q.dialog({
-          //   type: "negative",
-          //   title: "Erro",
-          //   message: `Ocorreu o seguinte erro: ${error.message}`,
-          // });
         }
       }
     };

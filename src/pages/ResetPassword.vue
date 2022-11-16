@@ -35,9 +35,8 @@
 <script>
 import { defineComponent, ref } from "vue";
 import useAuthUser from "../composables/UseAuthUser";
-import useSupabase from "../boot/supabase";
 import useNotify from "../composables/UseNotify";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "PageResetPassword",
@@ -46,24 +45,12 @@ export default defineComponent({
     const { resetPassword } = useAuthUser();
     const { notifyError, notifySuccess } = useNotify();
     const router = useRouter();
-    const route = useRoute();
-    const { supabase } = useSupabase();
-    // const token = route.query.token;
 
     const password = ref("");
 
     const handlePasswordReset = async () => {
-      // const { user, error } = await supabase.auth.updateUser({
-      //   password: password.value,
-      // });
-      // console.log("nova senha cadastrasda");
-      // if (error) throw error;
-
-      // return user;
-
       try {
         await resetPassword(password.value);
-        // await resetPassword(token, password.value);
         notifySuccess("Nova senha cadastrada!");
         router.push({ name: "login" });
       } catch (error) {
