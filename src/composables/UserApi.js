@@ -2,14 +2,13 @@ import useSupabase from "../boot/supabase"
 import useAuthUser from "../composables/UseAuthUser"
 
 export default function useApi() {
-
   const { user } = useAuthUser()
-  const supabase = useSupabase()
+  const { supabase } = useSupabase()
 
   const list = async (table) => {
     const { data, error } = await supabase
       .from(table)
-      .select('*')
+      .select()
     if (error) throw error
     return data
   }

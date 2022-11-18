@@ -13,7 +13,11 @@
 
         <q-toolbar-title> Calculadora de Prazo </q-toolbar-title>
 
-        <q-btn-dropdown color="primary" icon="person">
+        <q-btn-dropdown
+          color="primary"
+          icon="person"
+          :label="user.user_metadata.usuario"
+        >
           <q-list>
             <q-item clickable v-close-popup @click="handleLogout">
               <q-item-section>
@@ -71,7 +75,6 @@ const linksList = [
 
 import { defineComponent, ref, onMounted } from "vue";
 import useAuthUser from "../composables/UseAuthUser";
-// import useAuthUser from "src/composables/UseAuthUser";
 // import useApi from "src/composables/UseApi";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
@@ -90,7 +93,7 @@ export default defineComponent({
 
     const router = useRouter();
 
-    const { logout } = useAuthUser();
+    const { logout, user } = useAuthUser();
 
     const handleLogout = async () => {
       $q.dialog({
@@ -111,6 +114,7 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       handleLogout,
+      user,
     };
   },
 });

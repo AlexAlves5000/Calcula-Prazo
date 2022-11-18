@@ -1,7 +1,12 @@
 <template>
   <q-page padding>
     <div class="row">
-      <q-table :rows="rows" :columns="columns" row-key="date" class="col-12">
+      <q-table
+        :rows="feriados"
+        :columns="columns"
+        row-key="data"
+        class="col-12"
+      >
         <template v-slot:top>
           <span class="text-h6"> Feriados </span>
           <q-space />
@@ -26,29 +31,50 @@
 
 <script>
 const columns = [
-  { name: "date", align: "left", label: "Data", field: "date", sortable: true },
+  { name: "data", align: "left", label: "Data", field: "data", sortable: true },
   { name: "feriado", align: "left", label: "Feriado", field: "feriado" },
   { name: "sistema", align: "center", label: "Sistemas", field: "sistema" },
   { name: "actions", align: "center", label: "Ações", field: "actions" },
 ];
 
-const rows = [
-  {
-    date: "15/11/2022",
-    feriado: "Proclamação da Republica",
-    sistema: "PJE/eJUD",
-    actions: 87,
-  },
-];
+// const rows = [
+//   {
+//     date: "15/11/2022",
+//     feriado: "Proclamação da Republica",
+//     sistema: "PJE/eJUD",
+//     actions: 87,
+//   },
+// ];
 
-import { defineComponent } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
+import useApi from "../../composables/UserApi";
+import useNotify from "../../composables/UseNotify";
 
 export default defineComponent({
   name: "PageListaFeriados",
+
   setup() {
+    const feriados = ref([]);
+    const { list } = useApi();
+    const { notifyError } = useNotify();
+
+    const handleListFeriados = async () => {
+      try {
+        feriados.value = await list("FeriadosGerais");
+        console.log(feriados);
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
+
+    onMounted(() => {
+      handleListFeriados();
+    });
+
     return {
       columns,
-      rows,
+      feriados,
+      handleListFeriados,
     };
   },
 });
