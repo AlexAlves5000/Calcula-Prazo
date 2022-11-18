@@ -57,15 +57,21 @@ import EssentialLink from "../components/EssentialLink.vue";
 const linksList = [
   {
     title: "Contagem de Prazo",
-    // caption: "Realiza os cálculos de prazo",
-    // icon: "mdi-home",
-    icon: "mdi-calendar-search",
+    caption: "Cálculo de prazos",
+    icon: "mdi-calendar-start",
     routeName: "me",
+  },
+  {
+    title: "Feriados",
+    caption: "Cadastro de Feriados/Dias não úteis",
+    icon: "mdi-calendar-remove",
+    routeName: "diaferiado",
   },
 ];
 
 import { defineComponent, ref, onMounted } from "vue";
 import useAuthUser from "../composables/UseAuthUser";
+// import useAuthUser from "src/composables/UseAuthUser";
 // import useApi from "src/composables/UseApi";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
