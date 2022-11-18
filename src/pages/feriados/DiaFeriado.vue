@@ -6,11 +6,18 @@
         :columns="columns"
         row-key="data"
         class="col-12"
+        :loading="loading"
+        v-model:pagination="pagination"
       >
         <template v-slot:top>
           <span class="text-h6"> Feriados </span>
           <q-space />
-          <q-btn label="Adicionar" color="positive" />
+          <q-btn
+            label="Adicionar"
+            color="positive"
+            icon="mdi-plus"
+            :to="{ name: 'formferiado' }"
+          />
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
@@ -37,15 +44,6 @@ const columns = [
   { name: "actions", align: "center", label: "Ações", field: "actions" },
 ];
 
-// const rows = [
-//   {
-//     date: "15/11/2022",
-//     feriado: "Proclamação da Republica",
-//     sistema: "PJE/eJUD",
-//     actions: 87,
-//   },
-// ];
-
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "../../composables/UserApi";
 import useNotify from "../../composables/UseNotify";
@@ -55,13 +53,18 @@ export default defineComponent({
 
   setup() {
     const feriados = ref([]);
+    const loading = ref(true);
     const { list } = useApi();
     const { notifyError } = useNotify();
+    const pagination = ref({
+      rowsPerPage: 10,
+    });
 
     const handleListFeriados = async () => {
       try {
+        loading.value = true;
         feriados.value = await list("FeriadosGerais");
-        console.log(feriados);
+        loading.value = false;
       } catch (error) {
         notifyError(error.message);
       }
@@ -74,7 +77,8 @@ export default defineComponent({
     return {
       columns,
       feriados,
-      handleListFeriados,
+      loading,
+      pagination,
     };
   },
 });

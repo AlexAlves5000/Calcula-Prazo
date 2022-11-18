@@ -17,9 +17,9 @@ const routes = [
 
     children: [
       { path: 'me', name: 'me', component: () => import('src/pages/Me.vue') },
-      { path: 'diaferiado', name: 'diaferiado', component: () => import('pages/feriados/DiaFeriado.vue') }
+      { path: 'diaferiado', name: 'diaferiado', component: () => import('pages/feriados/DiaFeriado.vue') },
+      { path: 'formferiado', name: 'formferiado', component: () => import('pages/feriados/Form.vue') }
 
-      // { path: 'me', name: 'me', component: () => import('../pages/IndexPage.vue') }
     ],
     meta: {
       requiresAuth: true
