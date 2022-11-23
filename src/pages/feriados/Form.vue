@@ -1,8 +1,8 @@
 <template>
-  <q-page padding>
+  <q-page padding class="overflow-hidden-y">
     <p class="text-h5 text-center">Registro de Feriados</p>
 
-    <q-form class="" @submit.prevent="handleFeriado">
+    <q-form @submit.prevent="handleFeriado">
       <div class="q-pa-md">
         <label>Feriado aplicável em qual(is) sistema(s):</label>
         <q-option-group
@@ -60,42 +60,49 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-// import useApi from "../../composables/UserApi";
-// import useNotify from "../../composables/UseNotify";
+import { useRouter } from "vue-router";
+import useApi from "../../composables/UserApi";
+import useNotify from "../../composables/UseNotify";
 
 export default defineComponent({
   name: "PageAdicionarFeriado",
   setup() {
+    const table = "FeriadosGerais";
+    const router = useRouter();
+    const { post } = useApi();
+    const { notifyError, notifySuccess } = useNotify();
+
     const form = ref({
       sistema: ["ejud", "pje"],
       data: "",
       feriado: "",
     });
 
-    // const submitResult = ref([]);
+    const handleFeriado = async () => {
+      if (form.value.sistema.length === 2) {
+        form.value.sistema = 3;
+      } else if (form.value.sistema[0] === "ejud") {
+        form.value.sistema = 1;
+      } else {
+        form.value.sistema = 2;
+      }
 
-    // const feriados = ref([]);
-    // const loading = ref(true);
-    // const { list } = useApi();
-    // const { notifyError } = useNotify();
-    // const pagination = ref({
-    //   rowsPerPage: 10,
-    // });
-
-    const handleFeriado = "";
-
-    // const handleListFeriados = async () => {
-    //   try {
-    //     loading.value = true;
-    //     feriados.value = await list("FeriadosGerais");
-    //     loading.value = false;
-    //   } catch (error) {
-    //     notifyError(error.message);
-    //   }
-    // };
+      try {
+        await post(table, form.value);
+        notifySuccess("Feriado cadastrado!");
+        router.push({ name: "diaferiado" });
+      } catch (error) {
+        if (
+          error.message ===
+          'duplicate key value violates unique constraint "FeriadosGerais_data_key"'
+        ) {
+          notifyError("Data já cadastrada!");
+        }
+      }
+    };
 
     // onMounted(() => {
-    //   handleListFeriados();
+    //   handleFeriado();
     // });
 
     return {
@@ -113,11 +120,6 @@ export default defineComponent({
           value: "pje",
         },
       ],
-
-      // columns,
-      // feriados,
-      // loading,
-      // pagination,
     };
   },
 });

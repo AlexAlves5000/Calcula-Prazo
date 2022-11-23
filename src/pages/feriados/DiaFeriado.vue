@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding class="overflow-hidden-y">
     <div class="row">
       <q-table
         :rows="feriados"
