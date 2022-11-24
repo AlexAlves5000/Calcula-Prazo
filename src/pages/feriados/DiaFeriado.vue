@@ -64,6 +64,7 @@ export default defineComponent({
       try {
         loading.value = true;
         feriados.value = await list("FeriadosGerais");
+        console.log(feriados);
         loading.value = false;
       } catch (error) {
         notifyError(error.message);

@@ -10,7 +10,28 @@ export default function useApi() {
       .from(table)
       .select()
     if (error) throw error
-    return data
+
+    const dados = data.map((item) => {
+      return {
+        ...item, data: Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit", month: "2-digit", year: "numeric"
+        }).format(new Date(item.data))
+      }
+    })
+
+    // dados = dados.map((item) => {
+    //   // if (dados.sistema = 1) {
+    //   //   dados.sistema = eJUD
+    //   // }
+    // })
+
+    // if (item.data) return Intl.DateTimeFormat("pt-BR", {
+    //   day: "2-digit", month: "2-digit", year: "numeric"
+    // }).format(new Date(item.data))
+    // return item
+
+    return dados
+
   }
 
   const getById = async (table, id) => {
