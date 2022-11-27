@@ -11,27 +11,42 @@ export default function useApi() {
       .select()
     if (error) throw error
 
-    const dados = data.map((item) => {
-      return {
-        ...item, data: Intl.DateTimeFormat("pt-BR", {
-          day: "2-digit", month: "2-digit", year: "numeric"
-        }).format(new Date(item.data))
-      }
-    })
-
-    // dados = dados.map((item) => {
-    //   // if (dados.sistema = 1) {
-    //   //   dados.sistema = eJUD
-    //   // }
+    // const dados = data.map((item) => {
+    //   return {
+    //     ...item, data: Intl.DateTimeFormat("pt-BR", {
+    //       day: "2-digit", month: "2-digit", year: "numeric"
+    //     }).format(new Date(item.data))
+    //   }
     // })
 
-    // if (item.data) return Intl.DateTimeFormat("pt-BR", {
-    //   day: "2-digit", month: "2-digit", year: "numeric"
-    // }).format(new Date(item.data))
-    // return item
+    // console.log(dados)
 
-    return dados
+    const dadosFormatados = data.map((tabela) => {
 
+      const dataCorrigida = new Date(tabela.data)
+      dataCorrigida.setDate(dataCorrigida.getDate() + 1)
+
+      tabela.data = Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit", month: "2-digit", year: "numeric"
+      }).format(new Date(dataCorrigida))
+
+      // tabela.data = Intl.DateTimeFormat("pt-BR", {
+      //   day: "2-digit", month: "2-digit", year: "numeric"
+      // }).format(new Date(tabela.data))
+
+      if (tabela.sistema == 1) {
+        tabela.sistema = "eJud"
+      } else if (tabela.sistema == 2) {
+        tabela.sistema = "PJe"
+      } else if (tabela.sistema == 3) {
+        tabela.sistema = "eJud/PJe"
+      }
+      return tabela
+    })
+
+    console.log(dadosFormatados)
+
+    return dadosFormatados
   }
 
   const getById = async (table, id) => {
