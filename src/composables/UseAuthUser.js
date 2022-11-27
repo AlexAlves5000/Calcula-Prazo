@@ -9,6 +9,7 @@ export default function useAuthUser() {
 
   const login = async ({ email, password }) => {
     const { user, error } = await supabase.auth.signInWithPassword({ email, password })
+
     if (error) throw error
 
     return user

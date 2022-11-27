@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-12 q-pa-md">
-          <label>descrição do Feriado</label>
+          <label>Descrição do Feriado</label>
           <q-input
             outlined
             label="Feriado"
