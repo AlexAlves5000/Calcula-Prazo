@@ -21,7 +21,12 @@
         </template>
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn icon="mdi-pencil" color="info" dense>
+            <q-btn
+              icon="mdi-pencil"
+              color="info"
+              dense
+              @click="handleEdit(props.row)"
+            >
               <q-tooltip class="bg-info" :offset="[10, 10]"> Editar </q-tooltip>
             </q-btn>
             <q-btn icon="mdi-delete-empty" color="negative" dense>
@@ -47,6 +52,8 @@ const columns = [
 import { defineComponent, ref, onMounted } from "vue";
 import useApi from "../../composables/UserApi";
 import useNotify from "../../composables/UseNotify";
+import router from "src/router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "PageListaFeriados",
@@ -55,6 +62,7 @@ export default defineComponent({
     const feriados = ref([]);
     const loading = ref(true);
     const { list } = useApi();
+    const router = useRouter();
     const { notifyError } = useNotify();
     const pagination = ref({
       rowsPerPage: 10,
@@ -71,6 +79,11 @@ export default defineComponent({
       }
     };
 
+    // método para quando clicar no botão editar
+    const handleEdit = (feriado) => {
+      router.push({ name: "formferiado", params: { id: feriado.id } });
+    };
+
     onMounted(() => {
       handleListFeriados();
     });
@@ -80,6 +93,7 @@ export default defineComponent({
       feriados,
       loading,
       pagination,
+      handleEdit,
     };
   },
 });

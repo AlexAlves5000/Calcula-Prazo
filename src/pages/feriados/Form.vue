@@ -11,15 +11,6 @@
           color="primary"
           inline
         />
-        <!-- <q-option-group
-          name="accepted_genres"
-          v-model="form.sistema"
-          :options="options"
-          type="checkbox"
-          color="info"
-          inline
-          class="col-12"
-        /> -->
       </div>
 
       <div class="row">
@@ -65,8 +56,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import useApi from "../../composables/UserApi";
 import useNotify from "../../composables/UseNotify";
 
@@ -75,8 +66,12 @@ export default defineComponent({
   setup() {
     const table = "FeriadosGerais";
     const router = useRouter();
+    const route = useRoute();
     const { post } = useApi();
     const { notifyError, notifySuccess } = useNotify();
+
+    // verifica se existe um id na nossa rota o isUpdate recebe verdade ou falso
+    const isUpdate = computed(() => route.params.id);
 
     const form = ref({
       sistema: "3",
@@ -100,7 +95,11 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      handleFeriado();
+      if (isUpdate.value) {
+        alert("É para atualizar");
+      }
+
+      // handleFeriado();
     });
 
     return {

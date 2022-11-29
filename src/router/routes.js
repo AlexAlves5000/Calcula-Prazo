@@ -18,8 +18,7 @@ const routes = [
     children: [
       { path: 'me', name: 'me', component: () => import('src/pages/Me.vue') },
       { path: 'diaferiado', name: 'diaferiado', component: () => import('pages/feriados/DiaFeriado.vue') },
-      { path: 'formferiado', name: 'formferiado', component: () => import('pages/feriados/Form.vue') }
-
+      { path: 'formferiado/:id?', name: 'formferiado', component: () => import('pages/feriados/Form.vue') }
     ],
     meta: {
       requiresAuth: true
