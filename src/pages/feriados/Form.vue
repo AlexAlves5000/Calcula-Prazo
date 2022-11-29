@@ -6,6 +6,12 @@
       <div class="q-pa-md">
         <label>Feriado aplicável em qual(is) sistema(s):</label>
         <q-option-group
+          v-model="form.sistema"
+          :options="options"
+          color="primary"
+          inline
+        />
+        <!-- <q-option-group
           name="accepted_genres"
           v-model="form.sistema"
           :options="options"
@@ -13,7 +19,7 @@
           color="info"
           inline
           class="col-12"
-        />
+        /> -->
       </div>
 
       <div class="row">
@@ -73,20 +79,12 @@ export default defineComponent({
     const { notifyError, notifySuccess } = useNotify();
 
     const form = ref({
-      sistema: ["ejud", "pje"],
+      sistema: "3",
       data: "",
       feriado: "",
     });
 
     const handleFeriado = async () => {
-      if (form.value.sistema.length === 2) {
-        form.value.sistema = 3;
-      } else if (form.value.sistema[0] === "ejud") {
-        form.value.sistema = 1;
-      } else {
-        form.value.sistema = 2;
-      }
-
       try {
         await post(table, form.value);
         notifySuccess("Feriado cadastrado!");
@@ -101,23 +99,27 @@ export default defineComponent({
       }
     };
 
-    // onMounted(() => {
-    //   handleFeriado();
-    // });
+    onMounted(() => {
+      handleFeriado();
+    });
 
     return {
       form,
       handleFeriado,
-      accepted: ref(["ejud", "pje"]),
+      group: ref(""),
 
       options: [
         {
-          label: "eJUD",
-          value: "ejud",
+          label: "e-JUD e PJe",
+          value: "3",
         },
         {
-          label: "PJE",
-          value: "pje",
+          label: "e-JUD",
+          value: "1",
+        },
+        {
+          label: "PJe",
+          value: "2",
         },
       ],
     };
