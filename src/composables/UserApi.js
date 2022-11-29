@@ -11,16 +11,6 @@ export default function useApi() {
       .select()
     if (error) throw error
 
-    // const dados = data.map((item) => {
-    //   return {
-    //     ...item, data: Intl.DateTimeFormat("pt-BR", {
-    //       day: "2-digit", month: "2-digit", year: "numeric"
-    //     }).format(new Date(item.data))
-    //   }
-    // })
-
-    // console.log(dados)
-
     const dadosFormatados = data.map((tabela) => {
 
       const dataCorrigida = new Date(tabela.data)
@@ -30,21 +20,15 @@ export default function useApi() {
         day: "2-digit", month: "2-digit", year: "numeric"
       }).format(new Date(dataCorrigida))
 
-      // tabela.data = Intl.DateTimeFormat("pt-BR", {
-      //   day: "2-digit", month: "2-digit", year: "numeric"
-      // }).format(new Date(tabela.data))
-
       if (tabela.sistema == 1) {
-        tabela.sistema = "eJud"
+        tabela.sistema = "e-JUD"
       } else if (tabela.sistema == 2) {
         tabela.sistema = "PJe"
       } else if (tabela.sistema == 3) {
-        tabela.sistema = "eJud/PJe"
+        tabela.sistema = "e-JUD / PJe"
       }
       return tabela
     })
-
-    console.log(dadosFormatados)
 
     return dadosFormatados
   }
