@@ -67,11 +67,13 @@ export default defineComponent({
     const table = "FeriadosGerais";
     const router = useRouter();
     const route = useRoute();
-    const { post } = useApi();
+    const { post, getById } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
     // verifica se existe um id na nossa rota o isUpdate recebe verdade ou falso
     const isUpdate = computed(() => route.params.id);
+
+    let feriado = {};
 
     const form = ref({
       sistema: "3",
@@ -94,9 +96,18 @@ export default defineComponent({
       }
     };
 
+    const handleGetFeriado = async (id) => {
+      try {
+        feriado = await getById(table, id);
+        form.value = feriado;
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
+
     onMounted(() => {
       if (isUpdate.value) {
-        alert("É para atualizar");
+        handleGetFeriado(isUpdate.value);
       }
 
       // handleFeriado();
@@ -105,6 +116,8 @@ export default defineComponent({
     return {
       form,
       handleFeriado,
+      handleGetFeriado,
+
       group: ref(""),
 
       options: [
