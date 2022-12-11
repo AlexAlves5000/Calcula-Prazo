@@ -55,11 +55,8 @@ export default function useApi() {
   }
 
   const update = async (table, dados) => {
-    console.log('Nome do BD: ', table)
-    console.log('Entrou no update, dados recebidos:', dados)
-    console.log(dados.id)
     const { data, error } = await supabase
-      .from('FeriadosGerais')
+      .from(table)
       .update({
         data: dados.data,
         feriado: dados.feriado,
@@ -70,11 +67,11 @@ export default function useApi() {
     return data
   }
 
-  const remove = async (table, id) => {
+  const deletar = async (table, id) => {
     const { data, error } = await supabase
       .from(table)
       .delete()
-      .match({ id: id })
+      .eq('id', id)
     if (error) throw error
     return data
   }
@@ -84,6 +81,6 @@ export default function useApi() {
     getById,
     post,
     update,
-    remove
+    deletar,
   }
 }
