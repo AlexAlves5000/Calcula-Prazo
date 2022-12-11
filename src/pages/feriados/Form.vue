@@ -37,7 +37,7 @@
 
       <div class="row justify-center q-gutter-md">
         <q-btn
-          label="Registrar"
+          :label="isUpdate ? 'Atualizar' : 'Registrar'"
           color="primary"
           outlined
           size="md"
@@ -67,7 +67,7 @@ export default defineComponent({
     const table = "FeriadosGerais";
     const router = useRouter();
     const route = useRoute();
-    const { post, getById } = useApi();
+    const { post, getById, update } = useApi();
     const { notifyError, notifySuccess } = useNotify();
 
     // verifica se existe um id na nossa rota o isUpdate recebe verdade ou falso
@@ -83,9 +83,18 @@ export default defineComponent({
 
     const handleFeriado = async () => {
       try {
-        await post(table, form.value);
-        notifySuccess("Feriado cadastrado!");
-        router.push({ name: "diaferiado" });
+        console.log(isUpdate.value);
+        if (isUpdate.value) {
+          console.log('Dados do formulário de update: ', form.value);
+          await update(table, form.value);
+          notifySuccess('Feriado atualizado!');
+          router.push({ name: "diaferiado" });
+        } else {
+          console.log('Dados para cadastro de novo feriado: ', form.value)
+          await post(table, form.value);
+          notifySuccess("Feriado cadastrado!");
+          router.push({ name: "diaferiado" });
+        }
       } catch (error) {
         if (
           error.message ===
@@ -109,7 +118,6 @@ export default defineComponent({
       if (isUpdate.value) {
         handleGetFeriado(isUpdate.value);
       }
-
       // handleFeriado();
     });
 
@@ -117,6 +125,7 @@ export default defineComponent({
       form,
       handleFeriado,
       handleGetFeriado,
+      isUpdate,
 
       group: ref(""),
 

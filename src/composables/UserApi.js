@@ -12,7 +12,6 @@ export default function useApi() {
     if (error) throw error
 
     const dadosFormatados = data.map((tabela) => {
-
       const dataCorrigida = new Date(tabela.data)
       dataCorrigida.setDate(dataCorrigida.getDate() + 1)
 
@@ -55,13 +54,18 @@ export default function useApi() {
     return data
   }
 
-  const update = async (table, form) => {
+  const update = async (table, dados) => {
+    console.log('Nome do BD: ', table)
+    console.log('Entrou no update, dados recebidos:', dados)
+    console.log(dados.id)
     const { data, error } = await supabase
-      .from(table)
-      .update([
-        ...form
-      ])
-      .match({ id: form.id })
+      .from('FeriadosGerais')
+      .update({
+        data: dados.data,
+        feriado: dados.feriado,
+        sistema: dados.sistema
+      })
+      .eq('id', dados.id)
     if (error) throw error
     return data
   }
