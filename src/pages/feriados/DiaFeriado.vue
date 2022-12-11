@@ -29,7 +29,10 @@
             >
               <q-tooltip class="bg-info" :offset="[10, 10]"> Editar </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-empty" color="negative" dense>
+            <q-btn icon="mdi-delete-empty"
+             color="negative"
+             dense
+             @click="handleRemoveFeriado(props.row)">
               <q-tooltip class="bg-negative" :offset="[10, 10]">
                 Deletar
               </q-tooltip>
@@ -54,6 +57,8 @@ import useApi from "../../composables/UserApi";
 import useNotify from "../../composables/UseNotify";
 import router from "src/router";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
+
 
 export default defineComponent({
   name: "PageListaFeriados",
@@ -61,9 +66,10 @@ export default defineComponent({
   setup() {
     const feriados = ref([]);
     const loading = ref(true);
-    const { list } = useApi();
+    const { list, deletar } = useApi();
     const router = useRouter();
-    const { notifyError } = useNotify();
+    const { notifyError, notifySuccess } = useNotify();
+    const $q = useQuasar()
     const pagination = ref({
       rowsPerPage: 10,
     });
@@ -72,7 +78,6 @@ export default defineComponent({
       try {
         loading.value = true;
         feriados.value = await list("FeriadosGerais");
-        console.log(feriados);
         loading.value = false;
       } catch (error) {
         notifyError(error.message);
@@ -84,6 +89,32 @@ export default defineComponent({
       router.push({ name: "formferiado", params: { id: feriado.id } });
     };
 
+    const handleRemoveFeriado = async(feriado) => {
+      try {
+        $q.dialog({
+          title: 'Atenção',
+          message: `Você realmente deseja excluir este feriado? ${feriado.feriado}.`,
+          cancel: true,
+          persistent: true,
+          ok: {
+            push: true,
+            color: 'negative'
+          },
+          cancel: {
+            push: true,
+            color: 'positive'
+          },
+        }).onOk(async () => {
+          // console.log('Entrou no excluir!!')
+          await deletar("FeriadosGerais", feriado.id)
+          handleListFeriados()
+          notifySuccess("Feriado removido com sucesso!")
+        })
+      } catch (error) {
+        notifyError(error.message);
+      }
+    }
+
     onMounted(() => {
       handleListFeriados();
     });
@@ -94,6 +125,7 @@ export default defineComponent({
       loading,
       pagination,
       handleEdit,
+      handleRemoveFeriado,
     };
   },
 });
