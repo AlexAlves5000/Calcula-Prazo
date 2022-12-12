@@ -78,11 +78,20 @@ export default defineComponent({
       try {
         loading.value = true;
         feriados.value = await list("FeriadosGerais");
+        // feriados.value = sortByDateAsc(feriados.value);
+        console.log(feriados.value);
         loading.value = false;
       } catch (error) {
         notifyError(error.message);
       }
     };
+
+    const sortByDateAsc = (arr) => {
+      console.log(arr)
+      arr.sort(function(a, b) {
+        return new Date(a.data) - new Date(b.data);
+      });
+    }
 
     // método para quando clicar no botão editar
     const handleEdit = (feriado) => {
@@ -98,11 +107,13 @@ export default defineComponent({
           persistent: true,
           ok: {
             push: true,
-            color: 'negative'
+            color: 'negative',
+            label: 'Excluir',
           },
           cancel: {
             push: true,
-            color: 'positive'
+            color: 'positive',
+
           },
         }).onOk(async () => {
           // console.log('Entrou no excluir!!')

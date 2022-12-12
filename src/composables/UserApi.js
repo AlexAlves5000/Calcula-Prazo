@@ -26,6 +26,11 @@ export default function useApi() {
       } else if (tabela.sistema == 3) {
         tabela.sistema = "e-JUD / PJe"
       }
+
+      // const tabelaOrganizada = tabela.sort((a, b) => {
+      //   return a.data - b.data
+      // })
+
       return tabela
     })
 
