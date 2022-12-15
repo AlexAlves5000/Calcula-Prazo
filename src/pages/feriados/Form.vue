@@ -14,6 +14,32 @@
       </div>
 
       <div class="row">
+        <!-- <div class="q-pa-md col-12 col-sm-3 col-md-3" style="max-width: 300px">
+          <label>Data do Feriado</label>
+          <q-input v-model="form.data" outlined mask="date" :rules="['date']">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date v-model="form.data" mask="MM/DD/YYYY">
+                    <div class="row items-center justify-end">
+                      <q-btn
+                        v-close-popup
+                        label="Fechar"
+                        color="primary"
+                        flat
+                      />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div> -->
+
         <div class="q-pa-md col-12 col-sm-3 col-md-3">
           <label>Data do Feriado</label>
           <q-input type="date" v-model="form.data" outlined> </q-input>
@@ -85,12 +111,12 @@ export default defineComponent({
       try {
         console.log(isUpdate.value);
         if (isUpdate.value) {
-          console.log('Dados do formulário de update: ', form.value);
+          console.log("Dados do formulário de update: ", form.value);
           await update(table, form.value);
-          notifySuccess('Feriado atualizado!');
+          notifySuccess("Feriado atualizado!");
           router.push({ name: "diaferiado" });
         } else {
-          console.log('Dados para cadastro de novo feriado: ', form.value)
+          console.log("Dados para cadastro de novo feriado: ", form.value);
           await post(table, form.value);
           notifySuccess("Feriado cadastrado!");
           router.push({ name: "diaferiado" });
@@ -126,6 +152,8 @@ export default defineComponent({
       handleFeriado,
       handleGetFeriado,
       isUpdate,
+
+      // date: ref(""),
 
       group: ref(""),
 

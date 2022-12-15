@@ -14,6 +14,7 @@
           <q-space />
           <q-btn
             label="Adicionar"
+            v-if="$q.platform.is.desktop"
             color="positive"
             icon="mdi-plus"
             :to="{ name: 'formferiado' }"
@@ -29,10 +30,12 @@
             >
               <q-tooltip class="bg-info" :offset="[10, 10]"> Editar </q-tooltip>
             </q-btn>
-            <q-btn icon="mdi-delete-empty"
-             color="negative"
-             dense
-             @click="handleRemoveFeriado(props.row)">
+            <q-btn
+              icon="mdi-delete-empty"
+              color="negative"
+              dense
+              @click="handleRemoveFeriado(props.row)"
+            >
               <q-tooltip class="bg-negative" :offset="[10, 10]">
                 Deletar
               </q-tooltip>
@@ -41,6 +44,15 @@
         </template>
       </q-table>
     </div>
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn
+        fab
+        icon="add"
+        color="positive"
+        v-if="$q.platform.is.mobile"
+        :to="{ name: 'formferiado' }"
+      />
+    </q-page-sticky>
   </q-page>
 </template>
 
@@ -59,7 +71,6 @@ import router from "src/router";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 
-
 export default defineComponent({
   name: "PageListaFeriados",
 
@@ -69,7 +80,7 @@ export default defineComponent({
     const { list, deletar } = useApi();
     const router = useRouter();
     const { notifyError, notifySuccess } = useNotify();
-    const $q = useQuasar()
+    const $q = useQuasar();
     const pagination = ref({
       rowsPerPage: 10,
     });
@@ -87,44 +98,43 @@ export default defineComponent({
     };
 
     const sortByDateAsc = (arr) => {
-      console.log(arr)
-      arr.sort(function(a, b) {
+      console.log(arr);
+      arr.sort(function (a, b) {
         return new Date(a.data) - new Date(b.data);
       });
-    }
+    };
 
     // método para quando clicar no botão editar
     const handleEdit = (feriado) => {
       router.push({ name: "formferiado", params: { id: feriado.id } });
     };
 
-    const handleRemoveFeriado = async(feriado) => {
+    const handleRemoveFeriado = async (feriado) => {
       try {
         $q.dialog({
-          title: 'Atenção',
+          title: "Atenção",
           message: `Você realmente deseja excluir este feriado? ${feriado.feriado}.`,
           cancel: true,
           persistent: true,
           ok: {
             push: true,
-            color: 'negative',
-            label: 'Excluir',
+            color: "negative",
+            label: "Excluir",
           },
           cancel: {
             push: true,
-            color: 'positive',
-
+            color: "positive",
           },
         }).onOk(async () => {
           // console.log('Entrou no excluir!!')
-          await deletar("FeriadosGerais", feriado.id)
-          handleListFeriados()
-          notifySuccess("Feriado removido com sucesso!")
-        })
+          await deletar("FeriadosGerais", feriado.id);
+          handleListFeriados();
+          notifySuccess("Feriado removido com sucesso!");
+        });
       } catch (error) {
         notifyError(error.message);
       }
-    }
+    };
 
     onMounted(() => {
       handleListFeriados();
@@ -137,6 +147,7 @@ export default defineComponent({
       pagination,
       handleEdit,
       handleRemoveFeriado,
+      $q,
     };
   },
 });
