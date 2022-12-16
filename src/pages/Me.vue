@@ -1,69 +1,101 @@
 <template>
-  <q-page padding class="overflow-hidden-y">
+  <q-page padding>
     <p class="text-h4 text-center">Contagem de Prazo</p>
     <div class="row">
       <!-- Área do formulário -->
-      <div class="col-sm-12 col-md-8 gb-ligth">
+      <div class="col-sm-12 col-12 col-md-8 gb-ligth">
         <div class="q-pa-md">
           <q-form @submit="onSubmit" class="q-gutter-md">
-            <div class="bg-grey-2 q-pa-sm rounded-borders">
-              Sistema:
-              <q-option-group
-                name="sistema"
-                v-model="sistema"
-                :options="options"
-                color="primary"
-                inline
-              />
+            <div class="row justify-between">
+              <div class="bg-grey-2 q-pa-sm rounded-borders col-5">
+                <label class="text-h6">Sistema:</label>
+                <q-option-group
+                  name="sistema"
+                  v-model="sistema"
+                  :options="options"
+                  color="primary"
+                  inline
+                />
+              </div>
+
+              <div class="bg-grey-2 q-pa-sm rounded-borders col-5">
+                <label class="text-h6">Forma de Contagem:</label>
+                <q-option-group
+                  name="tipoContagem"
+                  v-model="formaContagem"
+                  :options="optionsContagem"
+                  color="primary"
+                  inline
+                />
+              </div>
             </div>
 
-            <div class="bg-grey-2 q-pa-sm rounded-borders">
-              Forma de Contagem:
-              <q-option-group
-                name="tipoContagem"
-                v-model="formaContagem"
-                :options="optionsContagem"
-                color="primary"
-                inline
-              />
+            <div class="row">
+              <div class="col-12 col-sm-3 col-md-3">
+                <label class="text-h6">Dia do Evento:</label>
+                <q-input type="date" outlined></q-input>
+              </div>
             </div>
 
-            <!-- <div class="q-pa-md col-12 col-sm-3 col-md-3">
-              <label>Data do Feriado</label>
-              <q-input type="date" v-model="form.data" outlined> </q-input>
-            </div> -->
-
-            <div>
-              <q-btn label="Calcular Prazo" type="submit" color="primary" />
+            <div class="row justify-between bg-grey-2 q-pa-sm">
+              <p class="text-h6 col-12 text-weight-bolder">PRAZOS:</p>
+              <div class="col-4 bg-grey-2 q-pa-md">
+                <label class="text-h6">Prazo 1 (Em Dias)</label>
+                <q-input v-model.number="model" type="number" outlined />
+                <label class="text-h6">Data Final</label>
+                <q-input v-model.number="model" outlined disable="" />
+                <div class="row justify-center">
+                  <q-btn
+                    label="Relatório"
+                    type="submit"
+                    color="secondary"
+                    class="q-mt-lg"
+                  />
+                </div>
+              </div>
+              <div class="col-4 bg-grey-3 q-pa-md">
+                <label class="text-h6">Prazo 2 (Em Dias)</label>
+                <q-input v-model.number="model" type="number" outlined />
+                <label class="text-h6">Data Final</label>
+                <q-input v-model.number="model" outlined disable="" />
+                <div class="row justify-center">
+                  <q-btn
+                    label="Relatório"
+                    type="submit"
+                    color="secondary"
+                    class="q-mt-lg"
+                  />
+                </div>
+              </div>
+              <div class="col-4 bg-grey-2 q-pa-md">
+                <label class="text-h6">Prazo 3 (Em Dias)</label>
+                <q-input v-model.number="model" type="number" outlined />
+                <label class="text-h6">Data Final</label>
+                <q-input v-model.number="model" outlined disable="" />
+                <div class="row justify-center">
+                  <q-btn
+                    label="Relatório"
+                    type="submit"
+                    color="secondary"
+                    class="q-mt-lg"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row justify-center q-pa-md">
+              <q-btn
+                label="Calcular Prazo"
+                type="submit"
+                color="primary"
+                class="text-h6"
+              />
             </div>
           </q-form>
-
-          <q-card
-            v-if="submitResult.length > 0"
-            flat
-            bordered
-            class="q-mt-md bg-grey-2"
-          >
-            <q-card-section
-              >Submitted form contains the following formData (key =
-              value):</q-card-section
-            >
-            <q-separator />
-            <q-card-section class="row q-gutter-sm items-center">
-              <div
-                v-for="(item, index) in submitResult"
-                :key="index"
-                class="q-px-sm q-py-xs bg-grey-8 text-white rounded-borders text-center text-no-wrap"
-              >
-                {{ item.name }} = {{ item.value }}
-              </div>
-            </q-card-section>
-          </q-card>
         </div>
       </div>
 
       <!-- Área de Calendários -->
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-4 col-12">
         <div class="row q-pa-md justify-center">
           <q-date v-model="date" today-btn />
         </div>
@@ -93,9 +125,8 @@ export default defineComponent({
     return {
       sistema: ref("1"),
       formaContagem: ref("1"),
-      accepted: ref([]),
-      submitResult,
-
+      // accepted: ref([]),
+      // submitResult,
       options: [
         {
           label: "eJUD",
@@ -119,17 +150,15 @@ export default defineComponent({
       ],
 
       onSubmit(evt) {
-        const formData = new FormData(evt.target);
-        const data = [];
-
-        for (const [name, value] of formData.entries()) {
-          data.push({
-            name,
-            value,
-          });
-        }
-
-        submitResult.value = data;
+        // const formData = new FormData(evt.target);
+        // const data = [];
+        // for (const [name, value] of formData.entries()) {
+        //   data.push({
+        //     name,
+        //     value,
+        //   });
+        // }
+        // submitResult.value = data;
       },
 
       user,
